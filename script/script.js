@@ -1,9 +1,7 @@
 
-
 const header = document.querySelector(".navbar");
 
-
-// nav bar onscroll change background color
+// Change the navbar background on scroll
 window.onscroll = function(){
     var top = window.scrollY;
     if(top  >= 100){
@@ -14,8 +12,7 @@ window.onscroll = function(){
     }
 }
 
-
-// auto typpe 
+// Auto-type effect for the text
 var typed = new Typed(".auto-type", {
     strings: [
         ' computer engineering student.',
@@ -26,7 +23,7 @@ var typed = new Typed(".auto-type", {
 })
 
 
-// skills card directed to a anchor tag when clicked
+// Skills cards that redirect to specified URLs
 document.addEventListener('DOMContentLoaded', function() {
     // Create an array to store the information for each card
     var cards = [
@@ -61,46 +58,52 @@ document.addEventListener('DOMContentLoaded', function() {
     cards.forEach(function(cardInfo) {
         var card = document.getElementById(cardInfo.id);
         card.addEventListener('click', function(){
-            // Ask for confirmation before redirecting
+             // Ask for confirmation before redirecting
             var isConfirmed = confirm("Are you sure you want to visit the link?");
             
             if (isConfirmed) {
-                // Redirect to a specific URL when the user confirms
+                 // Redirect to a specific URL when the user confirms
                 window.open(cardInfo.url ,'_blank');
-                // window.location.href = cardInfo.url;
             }
         });
     });
 });
 
 
-// try
+// Sending email using EmailJS
+function sendMail() {
+    (function() {
+      emailjs.init("8HYbk0Us84mZLrPY0"); // Account Public Key
+    })();
 
-var btn = document.getElementById('btn');
-btn.addEventListener('click',function(e){
-    e.preventDefault()
-    // declaring variable 
-    var name = document.getElementById('name').value;
-    var email = document.getElementById('email').value;
-    var subject = document.getElementById('subject').value;
-    var message = document.getElementById('message').value;
-    var body = 'name: ' + name + '<br/> email: ' + email + '<br/> subject: ' + subject + '<br/> message: ' + message;
+    var sendername = document.querySelector("#sendername").value;
+    var replyto = document.querySelector("#replyto").value;
+    var subject = document.querySelector("#subject").value;
+    var message = document.querySelector("#message").value;
 
+    // Check if any of the required fields are empty
+    if (sendername === '' || replyto === '' || subject === '' || message === '') {
+      alert('Please fill in all the required fields before sending the email.');
+      return; // Exit the function and prevent sending the email.
+    }
 
-    // clear the form fields
-    document.getElementById('name').value = '';
-    document.getElementById('email').value = '';
+    // Clear the form fields
+    document.getElementById('sendername').value = '';
+    document.getElementById('replyto').value = '';
     document.getElementById('subject').value = '';
     document.getElementById('message').value = '';
 
-    Email.send({
-        SecureToken : "be38afea-77cd-4de1-a532-f9ef818829ca",
-        To : 'floydmark22@gmail.com',
-        From : "nikzcameron@gmail.com",
-        Subject : "contact message",
-        Body : body
-    }).then(
-      message => alert('Message sent succesfully!')
-    );
-})
+    var serviceID = "service_2q2heib"; // Email Service ID
+    var templateID = "template_8o5ejnj"; // Email Template ID
 
+    emailjs.send(serviceID, templateID, {
+      sendername: sendername,
+      replyto: replyto,
+      subject: subject,
+      message: message
+    })
+    .then(res => {
+      alert("Email sent successfully!!");
+    })
+    .catch();
+  }
